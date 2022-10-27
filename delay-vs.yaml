@@ -1,0 +1,23 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: httpbin
+spec:
+  hosts:
+    - httpbin
+  http:
+    - fault:
+        delay:
+          fixedDelay: 1s
+          percentage:
+            value: 100
+      match:
+        - headers:
+            end-user:
+              exact: roc
+      route:
+        - destination:
+            host: httpbin
+    - route:
+        - destination:
+            host: httpbin
